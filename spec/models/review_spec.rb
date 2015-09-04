@@ -8,8 +8,6 @@ describe Review, type: :model do
     expect(review).to have(1).error_on(:rating)
   end
 
-  it { is_expected.to validate_uniqueness_of(:user).scoped_to(:restaurant) }
-
   describe 'it can be deleted as a specific user' do
     it 'can be deleted by the user that created it' do
       user = User.new(email: "joe@joe.com", password: "testtest", password_confirmation: "testtest")

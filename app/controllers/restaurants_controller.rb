@@ -53,8 +53,4 @@ class RestaurantsController < ApplicationController
       redirect_to restaurants_path
     end
   end
-
-  def build_review user, review
-    
-  end
 end
