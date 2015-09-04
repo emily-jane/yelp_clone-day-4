@@ -97,6 +97,15 @@ feature 'restaurants' do
       expect(page).to have_content 'Kentucky Fried Chicken'
       expect(current_path).to eq restaurants_path
     end
+
+    scenario 'only displays edit link if the user created that restaurant' do
+      sign_up
+      user = User.last
+      user.restaurants.create(name: 'KFC')
+
+      click_link 'Sign out'
+      expect(page).not_to have_link 'Edit KFC'
+    end
   end
 
   context 'deleting restaurants' do

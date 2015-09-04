@@ -2,10 +2,10 @@
   - @restaurants.each do |restaurant|
     %br/
     = link_to restaurant.name, restaurant_path(restaurant)
-    = link_to "Edit #{restaurant.name}", edit_restaurant_path(restaurant)
 
     - if current_user != nil && current_user.id == restaurant.user_id
       = link_to "Delete #{restaurant.name}", restaurant_path(restaurant), method: :delete
+      = link_to "Edit #{restaurant.name}", edit_restaurant_path(restaurant)
 
     = link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant)
     %br/
