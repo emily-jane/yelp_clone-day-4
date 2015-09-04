@@ -19,6 +19,7 @@
             ,
             = succeed "/5" do
               %strong= review.rating
+            = button_to "Delete Review", restaurant_review_path(restaurant, review), method: :delete
     - else
       %p No reviews.
 - else

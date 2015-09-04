@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Review, type: :model do
   it { is_expected.to belong_to :restaurant }
@@ -9,4 +9,21 @@ describe Review, type: :model do
   end
 
   it { is_expected.to validate_uniqueness_of(:user).scoped_to(:restaurant) }
+
+  describe 'it can be deleted as a specific user' do
+    it 'can be deleted by the user that created it' do
+      user = User.new(email: "joe@joe.com", password: "testtest", password_confirmation: "testtest")
+      review = Review.create(user: user, thoughts: "stuff", rating: 2)
+
+      expect{review.destroy_as(user)}.to change { Review.count }.by(-1)
+    end
+
+    it 'can be deleted by the user that created it' do
+      user = User.create(email: "joe@joe.com", password: "testtest", password_confirmation: "testtest")
+      user2 = User.create(email: "joe@joe2.com", password: "testtest", password_confirmation: "testtest")
+      review = Review.create(user: user, thoughts: "stuff", rating: 2)
+
+      expect {review.destroy_as(user2)}.to_not change { Review.count }
+    end
+  end
 end

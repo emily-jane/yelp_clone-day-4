@@ -13,12 +13,15 @@ class ReviewsController < ApplicationController
     if @review.save
       redirect_to restaurants_path
     else
-      if @review.errors[:user]
-        redirect_to restaurants_path
-        flash[:alert] = 'You can only leave one review'
-        render :new
-      end
+      flash[:alert] = @review.errors.values.join("\n")
+      redirect_to restaurants_path
     end
+  end
+
+  def destroy
+    Review.find(params[:id]).destroy_as(current_user)
+  
+    redirect_to restaurants_path
   end
 
   def review_params
