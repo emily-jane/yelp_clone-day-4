@@ -5,7 +5,7 @@ feature 'restaurants' do
     scenario 'should display a prompt to add a restaurant' do
       visit restaurants_path
       expect(page).to have_content 'no restaurants yet'
-      expect(page).to have_link 'add restaurant'
+      expect(page).to have_link 'Add restaurant'
     end
   end
 
@@ -37,7 +37,7 @@ feature 'restaurants' do
     context "not signed in" do
       scenario 'user must be logged in to create a restaurant' do
         visit '/'
-        click_link 'add restaurant'
+        click_link 'Add restaurant'
         expect(Restaurant.count).to be(0)
         expect(page).to have_content('You need to sign in or sign up before continuing')
       end
@@ -52,7 +52,7 @@ feature 'restaurants' do
         sign_up
         expect(current_path).to eq '/'
 
-        click_link 'add restaurant'
+        click_link 'Add restaurant'
         fill_in 'Name', with: 'kf'
         click_button 'Create Restaurant'
         expect(page).not_to have_css 'h2', text: 'kf'
@@ -102,8 +102,13 @@ feature 'restaurants' do
   context 'deleting restaurants' do
     before(:each) do
       sign_up
-      user = User.last
-      user.restaurants.create(name: 'KFC')
+      @user = User.last
+      @user.restaurants.create(name: 'KFC')
+    end
+
+    scenario 'only displays delete link if the user created that restaurant' do
+      click_link 'Sign out'
+      expect(page).not_to have_link 'Delete KFC'
     end
 
     scenario 'removes a restaurant when a user clicks a delete link' do

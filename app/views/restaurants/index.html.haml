@@ -3,7 +3,10 @@
     %br/
     = link_to restaurant.name, restaurant_path(restaurant)
     = link_to "Edit #{restaurant.name}", edit_restaurant_path(restaurant)
-    = link_to "Delete #{restaurant.name}", restaurant_path(restaurant), method: :delete
+
+    - if current_user != nil && current_user.id == restaurant.user_id
+      = link_to "Delete #{restaurant.name}", restaurant_path(restaurant), method: :delete
+
     = link_to "Review #{restaurant.name}", new_restaurant_review_path(restaurant)
     %br/
     %h3
@@ -21,4 +24,4 @@
 - else
   %h1 no restaurants yet
 %br/
-%a{:href => "<haml_loud"} new_restaurant_path&gt;add restaurant
+=link_to "Add restaurant", new_restaurant_path
